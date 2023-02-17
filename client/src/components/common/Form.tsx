@@ -64,7 +64,10 @@ const Form = ({ type, register, handleSubmit, handleImageChange, formLoading, on
                 fontWeight={500} my='10px'>Property Photo</Typography>
                 <Button component='label' sx={{ width: 'fit-content', color:'#2ed480', textTransform: 'capitalize', fontSize: 16}}>
                   Upload *
-                  <input hidden accept='image/*' type='file' onChange={(e) => { // @ts-ignore handleImageChange(e.target.files[0])
+                  <input hidden accept='image/*' type='file' onChange={(e) => { 
+                    if (e.target.files && e.target.files.length > 0) {
+                      handleImageChange(e.target.files[0]);
+                    }
                   }}
                   />
                 </Button>

@@ -14,13 +14,14 @@ const CreateProperty = () => {
 /* handleImageChange  prend un fichier image, le lit et le transforme en une chaîne de caractères sous forme de données URL,
     puis met à jour l'état de l'élément image avec cette URL.*/ 
 
-  const handleImageChange = (file: File) => {
+  const handleImageChange = (file: File) => {   
+    console.log('file:', file);
     const reader = (readFile: File) => new Promise<string>((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.onload = () => resolve(fileReader.result as string);
       fileReader.readAsDataURL(readFile);
-  })
-  reader(file).then((result: string) => setPropertyImage({ name: file?.name, url: result }));
+  }) 
+  reader(file).then((result: string) => setPropertyImage({ name: file?.name, url: result })); 
 };
 
 /* onFinishHandler =  Si une image a été sélectionnée, la fonction soumet les données à la fonction onFinish avec l'URL de l'image
@@ -39,8 +40,9 @@ const CreateProperty = () => {
       formLoading={formLoading}
       handleSubmit={handleSubmit}
       handleImageChange={handleImageChange}
-      onFinishHandler={onFinishHandler}
       propertyImage={propertyImage}
+      onFinishHandler={onFinishHandler}
+      
     />
   );
 }
