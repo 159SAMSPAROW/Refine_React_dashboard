@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTable } from '@pankod/refine-core';
 import { Box, Stack, Typography, TextField, Select, MenuItem } from '@pankod/refine-mui'
 import { useNavigate } from '@pankod/refine-react-router-v6';
@@ -10,6 +9,7 @@ const AllProperties = () => {
   const { 
     tableQueryResult: { data, isLoading, isError },
     current,
+    setCurrent,
     setPageSize,
     pageCount,
     sorter, setSorter,
@@ -79,6 +79,42 @@ const AllProperties = () => {
           photo={property.photo}
         />
       ))}
+    </Box>
+{/*CustomButton configuré pour retourné a la page précédente si le numero de page est supérieur a 1 */}
+    <Box display='flex' gap={2} mt={3} flexWrap='wrap'>
+        <CustomButton
+          title='Previous'
+          handleClick={() => setCurrent((prev) => prev - 1)}
+          backgroundColor='#475be8'
+          color='#fcfcfc'
+          disabled={!(current > 1)}
+        />
+{/* Affichage du numero de la page actuelle sur le nombre de page total */}
+        <Box display={{ xs: 'hidden', sm: 'flex' }} alignItems='center' gap='5px'>
+          Page{' '}<strong>{current} of {pageCount}</strong>
+        </Box>
+{/*CustomButton configuré pour passé a la page suivante si le numero de page est égal au nombre de page total */}        
+        <CustomButton
+          title='Next'
+          handleClick={() => setCurrent((prev) => prev + 1)}
+          backgroundColor='#475be8'
+          color='#fcfcfc'
+          disabled={current === pageCount}
+        />
+{/*Select qui permet d' afficher entre 10 et 50 item par page */}
+        <Select
+          variant='outlined'
+          color='info'
+          displayEmpty
+          required
+          inputProps={{'aria-label' : 'Without label'}}
+          defaultValue={10}
+          onChange={() => {}}
+        >
+          {[10, 20, 30, 40, 50].map((size) => (
+            <MenuItem key={size} value={size}>Show {size}</MenuItem>
+          ))}
+        </Select>
     </Box>
    </Box>
   );
