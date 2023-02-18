@@ -17,7 +17,13 @@ const AllProperties = () => {
   } = useTable()
 
   const allProperties = data?.data ?? [] // si data est undefined, elle utilise un tableau vide comme valeur de remplacement
+  const currentPrice = sorter.find((item) => item.field === 'price')?.order // extrait l'ordre de tri
   
+  // sert à inverser l'ordre de tri actuel (ascendant ou descendant) 
+  const toggleSort = (field: string) => {
+    setSorter([{ field, order: currentPrice === 'asc' ? 'desc' : 'asc'}])
+  }
+
   if(isLoading) return <Typography>Loading...</Typography>
   if(isError) return <Typography>Error...</Typography>
 
@@ -31,8 +37,8 @@ const AllProperties = () => {
         <Box mb={2} mt={3} display='flex' width='84%' justifyContent='space-between' flexWrap='wrap'>
           <Box display='flex' gap={2} flexWrap='wrap' mb={{ xs: '20px', sm: 0}}>
             <CustomButton 
-              title={`Sort Price`}
-              handleClick={() => {}}
+              title={`Sort Price ${currentPrice === 'asc' ? '↑' : '↓'}`}
+              handleClick={() => toggleSort('price')}
               backgroundColor='#475be8'
               color='#fcfcfc'
             />
