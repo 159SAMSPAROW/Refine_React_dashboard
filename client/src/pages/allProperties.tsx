@@ -3,6 +3,7 @@ import { Box, Stack, Typography, TextField, Select, MenuItem } from '@pankod/ref
 import { useNavigate } from '@pankod/refine-react-router-v6';
 import { PropertyCard, CustomButton } from 'components'
 import { Add } from '@mui/icons-material';
+import { useMemo } from 'react'
 
 const AllProperties = () => {
   const navigate = useNavigate()
@@ -19,10 +20,18 @@ const AllProperties = () => {
   const allProperties = data?.data ?? [] // si data est undefined, elle utilise un tableau vide comme valeur de remplacement
   const currentPrice = sorter.find((item) => item.field === 'price')?.order // extrait l'ordre de tri
   
-  // sert à inverser l'ordre de tri actuel (ascendant ou descendant) 
   const toggleSort = (field: string) => {
     setSorter([{ field, order: currentPrice === 'asc' ? 'desc' : 'asc'}])
-  }
+  }/* Sert à inverser l'ordre de tri actuel (ascendant ou descendant) */
+
+  const currentFilterValues = useMemo(() => {// Sert à mémoriser les valeurs de filtre actuelles pour les utiliser ultérieurement
+    const logicalFilters = filters.flatMap((item) => ('field' in item ? item : []))
+
+    return {
+      title: logicalFilters.find((item) => item.field === 'title')?.value || '',
+      propertyType: logicalFilters.find((item) => item.field === 'propertyType')?.value || '',
+    }
+  }, [filters])
 
   if(isLoading) return <Typography>Loading...</Typography>
   if(isError) return <Typography>Error...</Typography>
@@ -46,8 +55,19 @@ const AllProperties = () => {
               variant='outlined'
               color='info'
               placeholder='Search by title'
-              value=''
-              onChange={() => {}}
+              value={currentFilterValues.title}
+
+// Ce onChange sert à mettre à jour les filtres de recherche avec une recherche de type "contains"
+// sur le champ title, en utilisant la valeur saisie par l'utilisateur dans le champ de recherche.              
+              onChange={(e) => {
+                setFilters([
+                  {
+                    field: 'title',
+                    operator: 'contains',
+                    value: e.currentTarget.value ? e.currentTarget.value : undefined
+                  }
+                ])
+              }}
             />
             <Select 
               variant='outlined'

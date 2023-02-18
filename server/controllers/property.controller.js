@@ -28,7 +28,7 @@ const getAllProperties = async (req, res) => {
     query.propertyType = propertyType
   }
   if(title_like) {
-    query.title = { $regex: title_like, $option: 'i'}
+    query.title = { $regex: title_like, $options: 'i'}
   }
   try {
     const count = await Property.countDocuments({ query })
