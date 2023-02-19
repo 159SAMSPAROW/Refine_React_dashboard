@@ -15,8 +15,7 @@ const PropertyCard = ({ id, title, location, price, photo }: PropertyCardProps) 
         '&:hover': {
           boxShadow: '0 22px 45px 2px rgba(176,5)'
         },
-        cursor: 'pointer',
-        textDecoration: 'none'
+        cursor: 'pointer'
       }}
       elevation={0}
     >
