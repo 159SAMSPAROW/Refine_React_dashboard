@@ -57,6 +57,7 @@ const AllProperties = () => {
               placeholder='Search by title'
               value={currentFilterValues.title}
 
+// => Permet de rechercher une propriété par son intitulé
 // Ce onChange sert à mettre à jour les filtres de recherche avec une recherche de type "contains"
 // sur le champ title, en utilisant la valeur saisie par l'utilisateur dans le champ de recherche.              
               onChange={(e) => {
@@ -76,10 +77,25 @@ const AllProperties = () => {
               required
               inputProps={{'aria-label' : 'Without label'}}
               defaultValue=''
-              value=''
-              onChange={() => {}}
+              value={currentFilterValues.propertyType}
+
+// => Permet d' afficher les propriétés par type
+// Ce onChange met à jour le tableau de filtres de la
+// composante avec un nouveau filtre basé sur la valeur sélectionnée 
+              onChange={(e) => {
+                setFilters([
+                  {
+                    field: 'propertyType',
+                    operator: 'eq',
+                    value: e.target.value 
+                  }
+                ],'replace')
+              }}
             >
               <MenuItem value=''>All</MenuItem>
+              {['Apartement', 'Villa', 'Farmhouse', 'Condos', 'Townhouse', 'Duplex', 'Studio', 'Chalet'].map((type) =>(
+                <MenuItem key={type} value={type.toLowerCase()}>{type}</MenuItem>
+              ))}
             </Select>
           </Box>
         </Box>
@@ -135,7 +151,7 @@ const AllProperties = () => {
           required
           inputProps={{'aria-label' : 'Without label'}}
           defaultValue={10}
-          onChange={() => {}}
+          onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
         >
           {[10, 20, 30, 40, 50].map((size) => (
             <MenuItem key={size} value={size}>Show {size}</MenuItem>
