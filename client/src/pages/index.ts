@@ -1,4 +1,4 @@
-import AgentProfile from './agent-profile';
+import AgentProfile from './agent_profile';
 import Agents from './agent';
 import AllProperties from './allProperties';
 import CreateProperty from './createProperty';
